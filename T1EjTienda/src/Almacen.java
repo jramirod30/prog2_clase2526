@@ -24,18 +24,21 @@ public class Almacen {
 	
 	//PRE: 0 <= codProducto < size() y cantidad > 0
 	public void recibirProductos(int codProducto, int cantidad) {
-		//TO-DO
+		existenciasProductos[codProducto] += cantidad;
 	}
 	
 	//PRE: 0 <= codProducto < size() y cantidad > 0 y 
 	// existenciasProductos[codProducto] >= cantidad
 	public void gastarProductos(int codProducto, int cantidad) {
-		//TO-DO
+		existenciasProductos[codProducto] -= cantidad;
 	}
 	
 	public String toString() {
-		//TO-DO
-		return "";
+		String respuesta = "";
+		for (int i = 0; i < existenciasProductos.length - 1; i++) {
+			respuesta = respuesta + existenciasProductos[i] + ",";
+		}
+		return respuesta + existenciasProductos[existenciasProductos.length - 1];
 	}
 	
 	public boolean existeProductoAgotado() {
