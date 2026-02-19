@@ -42,9 +42,22 @@ public class Almacen {
 	}
 	
 	public boolean existeProductoAgotado() {
-		//TO-DO
-		return false;
+		boolean agotado = false;
+		for(int i=0; i<existenciasProductos.length && !agotado; i++) {
+				agotado = existenciasProductos[i]==0;
+		}
+		return agotado;
 	}
+	
+	public boolean existeProductoAgotado1() {
+		int i;
+		for(i=0; i<existenciasProductos.length 
+				&& existenciasProductos[i]>0; i++) ;
+		
+		return i < existenciasProductos.length;
+	}
+	
+	
 	
 	
 }
