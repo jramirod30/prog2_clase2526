@@ -8,6 +8,11 @@ public class Contacto {
         this.nombre = nombre;
         this.numero = numero;
     }
+    
+    public Contacto(Contacto obj) {
+    	this.nombre = obj.nombre;
+    	this.numero = obj.numero;
+    }
 
     // Getters
     public String getNombre() {
@@ -37,6 +42,9 @@ public class Contacto {
     public boolean tieneTtlfoMadrid() {
     	String valor = Long.toString(numero);
     	return valor.startsWith("91") || valor.startsWith("3491");
+    }
+    public void setNumero(long numero) {
+    	this.numero=numero;
     }
     
 }

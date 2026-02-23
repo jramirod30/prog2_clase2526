@@ -49,7 +49,7 @@ public class GuiaTelefonos {
 		}
 		return con;
 	}
-	
+
 	public Contacto buscarNumero(long numero) {
 		Contacto con = null;
 		for (int k = 0; k < numContactos && con == null; k++) {
@@ -57,12 +57,71 @@ public class GuiaTelefonos {
 		}
 		return con;
 	}
-	
+
 	public int contarTelefonosMadrid() {
-		
+		int contador=0;
+		for(int k=0; k<numContactos; k++) {
+			if(guia[k].tieneTtlfoMadrid()) {
+				contador++;
+			}
+		}
+		return contador;
 	}
 
-}
+	public void reemplazar(long numero, String  nombre) {
+		Contacto reemplazo=buscarNombre(nombre);
+		if(reemplazo!=null)
+			reemplazo.setNumero(numero);
+	}
 
+	public Contacto[] getTelefonosMadrid() {
+		Contacto[] telefonosMadrid = new Contacto[this.contarTelefonosMadrid()];
+		int j=0;
+		for(int i=0;j<telefonosMadrid.length;i++) {
+			if(this.guia[i].tieneTtlfoMadrid()) {
+				telefonosMadrid[j]=this.guia[i];
+				j++;
+			}
+		}
+		return telefonosMadrid;
+	}
+
+	public GuiaTelefonos(GuiaTelefonos guiatf)
+	{
+		this.guia = new Contacto[guiatf.guia.length];
+		this.numContactos = guiatf.numContactos;
+
+		for(int i = 0; i < this.numContactos; i++)
+		{
+			this.guia[i] = new Contacto(guiatf.guia[i]);
+		}
+	}
+
+	public boolean esIgual( GuiaTelefonos otra) {
+		boolean resultado= this.numContactos==otra.numContactos;
+		
+		for(int i=0; i<this.numContactos && resultado;i++) {
+			boolean encontrado=false;
+			for(int j =0; j< otra.guia.length&& !encontrado;j++) {
+				if(this.guia[i].esIgual(otra.guia[j])) {
+					encontrado=true;
+				}
+			}
+			if(!encontrado) resultado=false;
+		}
+		return resultado;
+	}
+	
+	public boolean esIgual1( GuiaTelefonos otra) {
+		boolean resultado= this.numContactos==otra.numContactos;
+		
+		for(int i=0; i<this.numContactos && resultado;i++) {
+			Contacto contacto = otra.buscarNombre(this.guia[i].getNombre());
+			resultado = (contacto != null) && 
+					contacto.getNumero() == this.guia[i].getNumero();
+		}
+		return resultado;
+	}
+}
 
 
