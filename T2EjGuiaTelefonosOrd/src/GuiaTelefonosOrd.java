@@ -1,5 +1,5 @@
-// Colección de contactos, asumiendo que no
-// se repiten nombres ni números de teléfono
+// ColecciÃ³n de contactos, asumiendo que no
+// se repiten nombres ni nÃºmeros de telÃ©fono
 public class GuiaTelefonosOrd {
 	private Contacto[] guia;
 	private int numContactos;
@@ -10,49 +10,68 @@ public class GuiaTelefonosOrd {
 		numContactos = 0;
 	}
 
-	// Añadir contacto
+	// AÃ±adir contacto
 	public void poner(Contacto contacto) {
 		if (numContactos < guia.length) {     // hay sitio
 			int i;
-			for(i = numContactos - 1; i >= 0 && 
+			for(i = numContactos-1; i >= 0 && 
 					guia[i].getNombre().compareTo(contacto.getNombre()) > 0
 					; i--)
-				guia[i + 1] = guia[i];
-			guia[i] = contacto;
+				guia[i+1] = guia[i];
+			
+			guia[i+1] = contacto;
+		
+				
 			numContactos++;
 		}
 	}
 
-	// Eliminar contacto
-	public void quitar(Contacto contacto) {
-		int pos = -1;
-		for (int k = 0; k < numContactos && pos < 0; k++) {  // buscarlo
-			if (guia[k].esIgual(contacto)) pos = k;   // está ahí
-		}
-		if (pos >= 0) {                // se ha encontrado
-			numContactos--;
-			if (pos < numContactos) {  // no era el último
-				guia[pos] = guia[numContactos];  // rellenar el hueco
+	private int buscarPos(String nombre) {		
+		int primero = 0;
+		int ultimo = numContactos - 1;
+		while (primero < ultimo) { // hay mÃ¡s de un elemento posible
+			int centro = (primero + ultimo) / 2;
+			String nombreCentro = guia[centro].getNombre();
+
+			if (nombreCentro.compareTo(nombre) > 0) {
+				ultimo = centro - 1;
+			} else if (nombreCentro.compareTo(nombre) < 0) {
+				primero = centro + 1;
+			} else { // nombreCentro == nombre
+				primero = centro;
+				ultimo = centro;
 			}
 		}
+		return ((primero==ultimo) && 
+				(guia[primero].getNombre().equals(nombre)) ? primero : -1);
+	}
+
+
+	// Eliminar contacto
+	public void quitar(Contacto contacto) {
+		int pos = buscarPos(contacto.getNombre());
+
+		if (pos >= 0) {
+			for(int i=pos; i<this.numContactos-1; i++)
+				guia[i] = guia[i+1];
+			numContactos--;			
+		}
+
 	}
 
 	// Presentar con formato
 	public String toString() {
 		String texto = "";
 		for (int k = 0; k < numContactos; k++) {  // procesar todos
-			texto = texto + guia[k] + "\n";       // un contacto por línea
+			texto = texto + guia[k] + "\n";       // un contacto por lÃ­nea
 		}
 		return texto;
 	}
 
-	// Búsquedas
+	// BÃºsquedas
 	public Contacto buscarNombre(String nombre) {
-		Contacto con = null;
-		for (int k = 0; k < numContactos && con == null; k++) {
-			if (guia[k].igualNombre(nombre)) con = guia[k];
-		}
-		return con;
+		int pos = buscarPos(nombre);
+		return (pos == -1? null : guia[pos]);
 	}
 
 	public Contacto buscarNumero(long numero) {
@@ -103,30 +122,15 @@ public class GuiaTelefonosOrd {
 	}
 
 	public boolean esIgual( GuiaTelefonosOrd otra) {
-		boolean resultado= this.numContactos==otra.numContactos;
-		
-		for(int i=0; i<this.numContactos && resultado;i++) {
-			boolean encontrado=false;
-			for(int j =0; j< otra.guia.length&& !encontrado;j++) {
-				if(this.guia[i].esIgual(otra.guia[j])) {
-					encontrado=true;
-				}
-			}
-			if(!encontrado) resultado=false;
-		}
-		return resultado;
+		if (this.numContactos==otra.numContactos) {
+			int i;
+			for(i=0; i<this.numContactos && this.guia[i].esIgual(otra.guia[i]);i++);
+			
+			return i==this.numContactos;
+		} else
+			return false;
 	}
-	
-	public boolean esIgual1( GuiaTelefonosOrd otra) {
-		boolean resultado= this.numContactos==otra.numContactos;
-		
-		for(int i=0; i<this.numContactos && resultado;i++) {
-			Contacto contacto = otra.buscarNombre(this.guia[i].getNombre());
-			resultado = (contacto != null) && 
-					contacto.getNumero() == this.guia[i].getNumero();
-		}
-		return resultado;
-	}
+
 }
 
 
