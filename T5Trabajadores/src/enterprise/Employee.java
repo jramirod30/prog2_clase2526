@@ -25,5 +25,10 @@ public class Employee extends Worker {
 	public double getSalary() {
 		return salary;
 	}
+	
+	@Override
+	public String toString() {
+		return super.toString() + " salary " + this.salary;
+	}
 
 }

@@ -23,5 +23,10 @@ public class Worker extends Person {
 	public String getnSegSocial() {
 		return nSegSocial;
 	}
+	
+	@Override
+	public String toString() {
+		return super.toString() + " nSegSocial " + this.nSegSocial;
+	}
 
 }

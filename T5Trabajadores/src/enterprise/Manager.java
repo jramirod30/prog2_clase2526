@@ -22,5 +22,10 @@ public class Manager extends Employee {
 		super(name, age, nSegSocial, salary);
 		this.bonus = bonus;
 	}
+	
+	@Override
+	public String toString() {
+		return super.toString() + " bonus " + this.bonus;
+	}
 
 }
