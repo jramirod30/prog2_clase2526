@@ -8,7 +8,7 @@ import person.Person;
 /**
  * 
  */
-public class Worker extends Person {
+public abstract class Worker extends Person {
 	private String nSegSocial;
 	/**
 	 * @param name
@@ -28,5 +28,7 @@ public class Worker extends Person {
 	public String toString() {
 		return super.toString() + " nSegSocial " + this.nSegSocial;
 	}
+	
+	public abstract double monthlyPayment();
 
 }

@@ -32,5 +32,9 @@ public class OutsideConsultant extends Worker {
 	public String toString() {
 		return super.toString() + " company " + this.company + " rate " + this.rate + " hours " + this.hours;
 	}
+	
+	public double monthlyPayment() {
+		return rate * hours;
+	}
 
 }

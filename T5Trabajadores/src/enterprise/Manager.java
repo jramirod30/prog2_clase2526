@@ -27,5 +27,10 @@ public class Manager extends Employee {
 	public String toString() {
 		return super.toString() + " bonus " + this.bonus;
 	}
+	
+	@Override
+	public double monthlyPayment() {
+		return super.monthlyPayment()+bonus;
+	}
 
 }

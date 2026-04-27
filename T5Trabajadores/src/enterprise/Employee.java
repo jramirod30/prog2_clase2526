@@ -30,5 +30,9 @@ public class Employee extends Worker {
 	public String toString() {
 		return super.toString() + " salary " + this.salary;
 	}
-
+	
+	@Override
+    public double monthlyPayment() {
+	   return salary/14;
+    }
 }
