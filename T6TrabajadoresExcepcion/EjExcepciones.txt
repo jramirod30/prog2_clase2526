@@ -1,0 +1,7 @@
+- crear setEdad en perosna
+- ErrorEdadInvalida
+- No puede haber trabajadores menores de 14
+- Para salario: ErrorSalarioIncorrecto y hacer set para el salario
+- Para el bonus: ErrorBonusIncorrecto
+- Para tarifa y horas: ErrorValorIncorrecto
+
