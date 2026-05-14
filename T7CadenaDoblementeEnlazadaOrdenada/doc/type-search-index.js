@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"secuencia","l":"NodeD"},{"p":"secuencia","l":"SortedDoubleLinkedList"}];updateSearchResults();
