@@ -45,7 +45,10 @@ public class SortedDoubleLinkedList <T, Comparador extends Comparator<T>>{
 	 * @throws ErrorEmptyList Se genera esta excepción cuando la secuencia está vacía
 	 */
 	public void goFirst() throws ErrorEmptyList {
-		//TODO
+		if (this.isEmpty()) {
+			throw new ErrorEmptyList ("La lista esta vacía");
+		}
+		this.cursor = this.first.getNext();
 	}
 	
 	/**
@@ -54,7 +57,10 @@ public class SortedDoubleLinkedList <T, Comparador extends Comparator<T>>{
 	 * @throws ErrorEmptyList Se genera esta excepción cuando la secuencia está vacía
 	 */
 	public void goEnd() throws ErrorEmptyList {
-		//TODO
+		if (this.isEmpty()) {
+			throw new ErrorEmptyList ("La lista esta vacía");
+		}
+		this.cursor = this.last.getPrev();
 	}
 	
 	/**
@@ -64,7 +70,14 @@ public class SortedDoubleLinkedList <T, Comparador extends Comparator<T>>{
 	 * @throws  ErrorCursor se generá si el cursor no es válido
 	 */
 	public void goNext() throws ErrorEndOfList, ErrorCursor{
-		//TODO
+		if(cursor==null) {
+			throw new ErrorCursor("El cursor no es valido");
+			}
+		if(/*cursor.getNext() == this.last*/ this.isEnd()) {
+			throw new ErrorEndOfList("El Cursor se encuentra al final de la lista");
+		}
+		this.cursor=this.cursor.getNext();
+		
 	}
 	
 	/**
@@ -74,7 +87,13 @@ public class SortedDoubleLinkedList <T, Comparador extends Comparator<T>>{
 	 * @throws ErrorCursor  se levanta cuando el cursor no es válido
 	 */
 	public void goPrev() throws ErrorBeginningOfList, ErrorCursor{
-		//TODO
+		if(cursor==null) {
+			throw new ErrorCursor("El cursor no es valido");
+			}
+		if(/*cursor.getPrev() == this.first*/ this.isStart()) {
+			throw new ErrorBeginningOfList("El Cursor se encuentra al principio de la lista");
+		}
+		this.cursor=this.cursor.getPrev();
 	}
 	
 	/**
@@ -83,7 +102,7 @@ public class SortedDoubleLinkedList <T, Comparador extends Comparator<T>>{
 	 */
 	public boolean isStart() {
 		//TODO
-		return false; //Dummy
+		return cursor != null && cursor == first.getNext(); //Dummy
 	}
 	/**
 	 * PRE: Cierto
@@ -99,7 +118,7 @@ public class SortedDoubleLinkedList <T, Comparador extends Comparator<T>>{
 	 */
 	public boolean isEnd() {
 		//TODO
-		return false;
+		return cursor != null && cursor.getNext() == this.last;
 	}
 	
 	/**
@@ -109,7 +128,9 @@ public class SortedDoubleLinkedList <T, Comparador extends Comparator<T>>{
 	 */
 	public T getCurrent() throws ErrorCursor {
 		//TODO
-		return null; //Dummy
+		if(cursor==null)
+			throw new ErrorCursor("El cursor no es válido.");
+		return cursor.getDato(); //Dummy
 	}
 	
 	/**
@@ -118,8 +139,9 @@ public class SortedDoubleLinkedList <T, Comparador extends Comparator<T>>{
 	 * @throws ErrorEmptyList Se lanza cuando la secuencia está vacía 
 	 */
 	public T getFirst() throws ErrorEmptyList {
-		//TODO
-		return null; //Dummy
+		if (this.isEmpty())
+			throw new ErrorEmptyList("No hay datos en una lista vacía");
+		return this.first.getNext().getDato(); //Dummy
 	}
 	
 	/**
@@ -128,8 +150,9 @@ public class SortedDoubleLinkedList <T, Comparador extends Comparator<T>>{
 	 * @throws ErrorEmptyList Se lanza si la secuencia está vacía 
 	 */
 	public T getLast() throws ErrorEmptyList {
-		//TODO
-		return null; //Dummy
+		if (this.isEmpty())
+			throw new ErrorEmptyList("No hay datos en una lista vacía");
+		return this.last.getPrev().getDato(); //Dummy
 	}
 	
 	/**
@@ -148,7 +171,16 @@ public class SortedDoubleLinkedList <T, Comparador extends Comparator<T>>{
 	 * @param data: Dato que se va a insertar
 	 */
 	public void add (T data) {
-		//TODO
+		NodeD<T> aniadir = new NodeD<>(data);
+		NodeD<T> anterior = this.cambioOrden(data);
+		
+		aniadir.setNext(anterior.getNext());
+		aniadir.setPrev(anterior);
+		
+		anterior.setNext(aniadir);
+		aniadir.getNext().setPrev(aniadir);
+		this.cursor = aniadir;
+		this.nElements++;
 	}
 
 	/**
@@ -164,8 +196,27 @@ public class SortedDoubleLinkedList <T, Comparador extends Comparator<T>>{
 	 * @return Cierto si el dato se encuentra y se elimnia de la lista
 	 */
 	public boolean delete (T data) {
-	//TODO
-		return false; //Dummy
+		NodeD<T> anterior = this.cambioOrden(data);
+		boolean notDelete = anterior.getNext() == this.last ||
+				this.compare.compare(data, anterior.getNext().getDato()) !=0;
+		if (notDelete)
+			return false;
+		
+		//Si está y hay que borrar
+		NodeD<T> borrado = anterior.getNext();
+		anterior.setNext(borrado.getNext());
+		borrado.getNext().setPrev(anterior);
+		this.nElements --;
+		//Se ajusta el cursor si es necesario
+		if (borrado == this.cursor) {//Hay que actualizar el cursor
+			if (this.nElements == 0)
+				this.cursor = null;
+			else {
+				cursor = (cursor.getNext() == this.last)? cursor.getPrev(): cursor.getNext();
+			}
+		}
+		
+		return true; //Dummy
 	}
 	
 	/**
@@ -176,7 +227,13 @@ public class SortedDoubleLinkedList <T, Comparador extends Comparator<T>>{
 	 * @return  Se retorna la primera instancia de data que se encuentre
 	 */
 	public T search (T data) {
-		//TODO
+		NodeD<T> anterior = this.cambioOrden(data);
+		boolean esta = anterior.getNext() != this.last &&
+				this.compare.compare(data, anterior.getNext().getDato()) ==0;
+		if (esta) {
+			cursor = anterior.getNext();
+			return  cursor.getDato();
+		}
 		return null; //Dummy
 	}
 	
@@ -186,7 +243,11 @@ public class SortedDoubleLinkedList <T, Comparador extends Comparator<T>>{
 	 * @return Retorna el nodo anterior al que se produce el cambio de orden.
 	 */
 	private NodeD<T> cambioOrden (T data){
-		//TODO
-		return null; //Dummy
+		NodeD<T> enEstudio = this.first;
+		while (enEstudio.getNext() != last && 
+				this.compare.compare(enEstudio.getNext().getDato(),data)<0) {
+			enEstudio = enEstudio.getNext();
+		}
+		return enEstudio; //Dummy
 	}
 }

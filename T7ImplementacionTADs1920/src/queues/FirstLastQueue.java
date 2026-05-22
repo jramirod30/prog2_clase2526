@@ -46,16 +46,7 @@ public class FirstLastQueue<E> implements IQueue<E> {// ColaPrimeroUltimo
 	 * </PRE>
 	 */
 
-	/**
-	 * Elimina el primer elemento de la cola
-	 * <br><B>PRE:</B> no es vacía la cola
-	 * <br><B>POST:</B> El resultado es la cola de entrada sin el elemento más antiguo
-	 *
-	 * @throws EmptyQueueException excepción que se genera si se viola la precondición
-	 */
-	private void remove() throws EmptyQueueException {// Borrar
-		//TODO
-	}// Borrar
+
 
 	/*//Esp. formal
 	 * PRE: Cierto POST/SOL: Resultado = (C = CColaVacia) COMPLEJIDAD: O (1)
@@ -87,6 +78,14 @@ public class FirstLastQueue<E> implements IQueue<E> {// ColaPrimeroUltimo
 	 */
 	public void add(E elemento) {// Insertar
 		//TODO
+		Node<E> nuevo = new Node<>(elemento);
+		if(this.isEmpty()) {
+			this.first = nuevo;
+			
+		} else {
+			last.setNext(nuevo);
+		}
+		this.last = nuevo;
 	}// Insertar
 
 	/*//Esp. Formal
@@ -104,8 +103,10 @@ public class FirstLastQueue<E> implements IQueue<E> {// ColaPrimeroUltimo
 	 * @throws EmptyQueueException excepción que se genera si se viola la precondición
 	 */
 	public E peek() throws EmptyQueueException {// Primero
-		//TODO
-		return null;
+		if(this.isEmpty()) {
+			throw new EmptyQueueException("No puedo darte datos de una cola vacía.");
+		}
+		return this.first.element();
 	}// Primero
 
 	/*//Esp. Formal
@@ -165,8 +166,12 @@ public class FirstLastQueue<E> implements IQueue<E> {// ColaPrimeroUltimo
 	 * @throws EmptyQueueException excepción que se genera si se viola la precondición
 	 */
 	public E poll() throws EmptyQueueException {// Sacar_Primero
-		//TODO
-		return null;
+		E elemento= this.peek();
+		first = first.next();
+		if(first == null) {
+			this.last = null;
+		}
+		return elemento;
 	}// Sacar_Primero
 
 }// ColaPrimeroUltimo

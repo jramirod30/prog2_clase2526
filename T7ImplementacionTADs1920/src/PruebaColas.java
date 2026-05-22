@@ -13,9 +13,10 @@
  * @author agonzalez
  */
 
-//import ED1.TADS.colas.*;
+
 
 import queues.SimpleQueue;
+import queues.CircularQueue;
 
 
 public class PruebaColas {//PruebaCola
@@ -32,9 +33,9 @@ public class PruebaColas {//PruebaCola
 	// es necesario recurrir a utilizar
 	//caracteres comodines. El siguiente servicio recibe una cola saca los
 	//n primeros elementos de la cola y los retorna en un Array 
-	public static Object [] convertirArray (SimpleQueue <?> Cola, int Cuantos)
+	//public static Object [] convertirArray (SimpleQueue <?> Cola, int Cuantos)
 	//	public static Object [] convertirArray (ColaPrimeroUltimo <?> Cola, int Cuantos)
-	//	public static Object [] convertirArray (ColaCircular <?> Cola, int Cuantos)
+	public static Object [] convertirArray (CircularQueue <?> Cola, int Cuantos)
 	{//convertirArray
 		Object [] resultado = new Object[Cuantos];
 		int Contador=0;
@@ -58,9 +59,9 @@ public class PruebaColas {//PruebaCola
 		//Al trabajar con la interface definida lo único que varía
 		//de utilizar una implementación u otra es la llamada a new
 		// iColas <Integer> Cola_Enteros= new Colas <Integer>();
-		SimpleQueue <Integer> colaEnteros= new SimpleQueue <Integer>();
+		//SimpleQueue <Integer> colaEnteros= new SimpleQueue <Integer>();
 		//ColaPrimeroUltimo <Integer> colaEnteros= new ColaPrimeroUltimo <Integer>();
-		// ColaCircular <Integer> colaEnteros= new ColaCircular <Integer>();
+		CircularQueue <Integer> colaEnteros= new CircularQueue <>();
 		Integer aux;
 		int contador=0;
 		try {//try

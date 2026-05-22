@@ -21,12 +21,22 @@ import secuencia.exception.ErrorEndOfList;
  * TODO: Test  Next, Prev, isStart, isEnd
  */
 
+class CompararEdad implements Comparator<Contacto>{
+
+	@Override
+	public int compare(Contacto o1, Contacto o2) {
+		// TODO Auto-generated method stub
+		return o1.getEdad() - o2.getEdad();
+	}
+	
+}
 /**
  * @author agonzalez
  *
  */
 public class TestSortedDoubleLinkedList {
 	private SortedDoubleLinkedList<Contacto, Comparator<Contacto>> agenda;
+	private SortedDoubleLinkedList<Contacto, Comparator<Contacto>> prueba;
 	private Contacto [] contactosOrdenados;
 	/**
 	 * @throws java.lang.Exception
@@ -40,6 +50,10 @@ public class TestSortedDoubleLinkedList {
 				new Contacto("A1", "Ap1, Ap2","", "", 22, 02, 2000),
 				new Contacto("B1", "Ap1, Ap3","", "", 25, 05, 2010)
 		};
+		//Por edad
+	//prueba = new SortedDoubleLinkedList<>((Contacto dato1, Contacto dato2) -> dato1.getEdad() -
+	//		                                                                  dato2.getEdad());
+		prueba = new SortedDoubleLinkedList<>(new CompararEdad());
 	}
 
 	/**

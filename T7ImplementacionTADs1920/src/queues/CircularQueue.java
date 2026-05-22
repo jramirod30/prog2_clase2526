@@ -24,7 +24,7 @@ public class CircularQueue  <E> implements IQueue<E> {
 	 * estructura.
 	 */
 	public CircularQueue() {
-	    // sirve la inicialización por defecto de los atributos
+		// sirve la inicialización por defecto de los atributos
 	}
 
 	/*//Esp. Formal
@@ -57,10 +57,10 @@ public class CircularQueue  <E> implements IQueue<E> {
 	 */
 
 	/* (non-Javadoc)
-     * @see queues.QueueInterface#isEmpty()
-     */
+	 * @see queues.QueueInterface#isEmpty()
+	 */
 	@Override
-    public boolean isEmpty ()
+	public boolean isEmpty ()
 	{//Esta_Vacia
 		return this.last==null;
 	}
@@ -78,12 +78,24 @@ public class CircularQueue  <E> implements IQueue<E> {
 	 */
 
 	/* (non-Javadoc)
-     * @see queues.QueueInterface#add(E)
-     */
+	 * @see queues.QueueInterface#add(E)
+	 */
 	@Override
-    public void add (E elemento)
+	public void add (E elemento)
 	{//Insertar
-	//TODO
+		//TODO
+		Node<E> nuevo = new Node<>(elemento);
+		if(this.isEmpty())
+		{
+			nuevo.setNext(nuevo);
+		}
+		else
+		{
+			Node<E> first = this.last.next();
+			nuevo.setNext(first);
+			this.last.setNext(nuevo);
+		}
+		this.last = nuevo;
 	}//Insertar
 
 	/*//Esp. Formal
@@ -98,13 +110,16 @@ public class CircularQueue  <E> implements IQueue<E> {
 	 */
 
 	/* (non-Javadoc)
-     * @see queues.QueueInterface#peek()
-     */
+	 * @see queues.QueueInterface#peek()
+	 */
 	@Override
-    public E peek () throws EmptyQueueException
+	public E peek () throws EmptyQueueException
 	{//Primero
 		//TODO
-		return null;
+		if(this.isEmpty()) {
+			throw new EmptyQueueException ("La cola está vacia.");
+		}
+		return last.next().element();
 	}//Primero
 
 	/*//Esp Formal.
@@ -147,13 +162,18 @@ public class CircularQueue  <E> implements IQueue<E> {
 	 */
 
 	/* (non-Javadoc)
-     * @see queues.QueueInterface#poll()
-     */
+	 * @see queues.QueueInterface#poll()
+	 */
 	@Override
-    public E poll() throws EmptyQueueException
+	public E poll() throws EmptyQueueException
 	{//Sacar_Primero
-		//TODO
-		return null;
+		E elemento = this.peek();
+		if (this.last == this.last.next()) {
+			this.last = null;
+		} else {
+			this.last.setNext(this.last.next().next());
+		}
+		return elemento;
 	}//Sacar_Primero
 
 

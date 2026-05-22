@@ -35,16 +35,33 @@ public class LinkedList<E> implements IList<E> {
      * 
      */
     public LinkedList(LinkedList<E> org){
-        head = null;
-        //TODO
+    	if (org.size() == 0)
+    		return;
+    	
+    	Node<E> actual = org.head.next();
+    	this.head = new Node<>(org.head.getElem());
+    	Node<E> insertar = this.head;
+    	while (actual != null) {
+    		insertar.setNext(new Node<>(actual.getElem()));
+    		insertar = insertar.next();
+    		actual = actual.next();
+    	}	    	
+    	this.nElems = org.nElems;
       }
 
     // devuelve una ref al nodo que se encuentra en la posición pos de la cadena
     // PRE: 0 <= pos <= size()-1
     private Node<E> getNodeIn(int pos) throws IndexOutOfBoundsException {		
-        //TODO       	
-
-        return null;
+        if (pos < 0 || pos >= this.size()) {
+			throw new IndexOutOfBoundsException ("El índice debe estar entre 0 y "+(this.nElems-1));
+		}
+        int contador = 0;
+        Node<E> resultado = this.head;
+        while (contador < pos) {
+        	resultado = resultado.next();
+        	contador ++;
+        }
+        return resultado;
     }
 
     /**
@@ -59,6 +76,19 @@ public class LinkedList<E> implements IList<E> {
     @Override
     public void add(int insertIndex, E element) throws IndexOutOfBoundsException {
         // TODO 
+    	if (insertIndex < 0 || insertIndex > this.nElems) {
+    		throw new IndexOutOfBoundsException ("El índice debe estar entre 0 y "+this.nElems);
+    	}
+    	Node<E> nuevo = new Node<>(element);
+    	if (insertIndex == 0) {
+    		nuevo.setNext(this.head);
+    		this.head = nuevo; 
+    	}else {
+    		Node<E>puntoInsercion = this.getNodeIn(insertIndex-1);
+    		nuevo.setNext(puntoInsercion.next());
+    		puntoInsercion.setNext(nuevo);
+    	}
+    	this.nElems++;
     }
 
     /**
@@ -124,8 +154,19 @@ public class LinkedList<E> implements IList<E> {
      */
     @Override
     public void removeElementAt(int removalIndex) throws IndexOutOfBoundsException {
-        // TODO Auto-generated method stub
+        if(removalIndex < 0 || removalIndex >= this.size()) {
+        	throw new IndexOutOfBoundsException("Valor fuera de rango. El índice debe estar entre 0 y"
+        			+ " " + (this.nElems-1));
+        }
         
+        if (removalIndex ==0 ) {
+        	this.head = this.head.next();
+        }
+        else {
+        	Node<E> anterior = this.getNodeIn(removalIndex-1);
+        	anterior.setNext(anterior.next().next());
+        }
+        this.nElems --;
     }
 
     /**
@@ -139,7 +180,33 @@ public class LinkedList<E> implements IList<E> {
     @Override
     public boolean remove(E element) {
         // TODO Auto-generated method stub
-        return false;
+    	/*int pos = this.indexOf(element);
+    	if (pos == -1)
+    		return false;
+    	this.removeElementAt(pos);
+    	return true;*/
+    	if (this.size() == 0)
+    		return false;
+    	
+    	boolean eliminado = false;
+    	if(head.getElem().equals(element)) {
+    		head = head.next();
+    		eliminado = true;
+    		nElems--;
+    	} else {
+    		Node<E> enEstudio = head;
+    		while(enEstudio.next() != null &&
+    				!enEstudio.next().getElem().equals(element)) {
+    			enEstudio = enEstudio.next();
+    		}
+    		if(enEstudio.next() != null) {
+    			enEstudio.setNext(enEstudio.next().next());
+        		eliminado = true;
+        		nElems--;
+    		}
+    		
+    	}
+    	return eliminado;
     }
 
     // Class-specific methods
@@ -172,8 +239,22 @@ public class LinkedList<E> implements IList<E> {
 
         LinkedList<?> list = (LinkedList<?>) obj;
         //TODO
+        if(this.nElems != list.nElems)
+        	 return false;
         
-        return false;
+        if (this.nElems == 0)
+        	return true; //Dos listas vacías siempre son iguales
+        if(this.head.element().getClass() != list.head.element().getClass()) {
+        	return false;
+        }
+        Node<E> actualThis = this.head;
+        Node<?> actualOther = list.head;
+        while(actualThis != null && actualThis.element().equals(actualOther.element())) {
+        	actualThis = actualThis.next();
+        	actualOther = actualOther.next();
+        	}
+        
+        return actualThis == null;
        }
 
     /**
